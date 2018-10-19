@@ -38,7 +38,11 @@
     "styled-components": "^3.4.9",
     "typed.js": "^2.0.9",
     "winston": "^3.1.0",
-    "winston-daily-rotate-file": "^3.3.3"
+    "winston-daily-rotate-file": "^3.3.3",
+    "got": "^8.3.0",
+    "nconf": "^0.10.0",
+    "restify": "6.3.4",
+    "simple-pg": "^1.0.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.1.0",
