@@ -4,6 +4,9 @@ import { middle, darkest, light } from '../vars';
 import months from '../constants/months';
 import UiStore from '../stores/UiStore';
 import { observer } from 'mobx-react';
+import emitter from '../uiEmitter';
+import anime from 'animejs';
+import { findDOMNode } from 'react-dom';
 
 const Container = styled.div`
   position: absolute;
@@ -13,6 +16,7 @@ const Container = styled.div`
   transform: translateY(-50%);
   border: 1px solid ${darkest};
   border-radius: 5px 0 0 5px;
+  opacity: 0;
 `;
 
 const Part = styled.div`
@@ -23,20 +27,46 @@ const Part = styled.div`
   cursor: pointer;
   text-transform: uppercase;
   font-size: 14px;
+  transition: background 0.3s ease;
   &:last-child {
     border-bottom: 0;
+  }
+
+  @media (max-width: 730px) {
+    font-size: 12px;
+    padding: 8px 12px;
   }
 `;
 
 @observer
 class MonthPicker extends React.Component {
-  componentDidMount() {}
+  wrapper = React.createRef();
+
+  show = () => {
+    anime({
+      targets: findDOMNode(this.wrapper.current),
+      opacity: [0, 1],
+      translateY: ['-50%', '-50%'],
+      translateX: [100, 0],
+      begin: () => {
+        emitter.emit('showHeader');
+      }
+    });
+  };
+
+  componentDidMount() {
+    emitter.on('pageLoaded', this.show);
+  }
+
+  componentWillUnmount() {
+    emitter.off('pageLoaded', this.show);
+  }
 
   render() {
     const { selectedMonth, setSelectedMonth } = UiStore;
 
     return (
-      <Container>
+      <Container innerRef={this.wrapper}>
         {months.map(date => (
           <Part
             onClick={() => setSelectedMonth(date)}

@@ -1,5 +1,6 @@
 import { observable, action } from 'mobx';
 import months from '../constants/months';
+import emitter from '../uiEmitter';
 
 class UiStore {
   @observable
@@ -15,8 +16,11 @@ class UiStore {
 
   @action
   setLoaded = () => {
-    console.log('?');
     this.isPageLoading = false;
+
+    setTimeout(() => {
+      emitter.emit('pageLoaded');
+    }, 200);
   };
 }
 

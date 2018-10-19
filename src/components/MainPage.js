@@ -8,7 +8,10 @@ import UiStore from '../stores/UiStore';
 import Loader from './Loader';
 import { bgColor } from '../vars';
 
-const Container = styled.div``;
+const Container = styled.div`
+  height: 100vh;
+  position: relative;
+`;
 
 const PageLoader = styled.div`
   position: fixed;
