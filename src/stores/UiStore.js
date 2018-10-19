@@ -1,13 +1,14 @@
 import { observable, action } from 'mobx';
+import months from '../constants/months';
 
 class UiStore {
   @observable
-  isScreenShot = false;
+  selectedMonth = months[0];
 
   @action
-  setScreenShot() {
-    this.isScreenShot = true;
-  }
+  setSelectedMonth = month => {
+    this.selectedMonth = month;
+  };
 }
 
 export default new UiStore();
