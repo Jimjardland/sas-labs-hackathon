@@ -101,7 +101,7 @@ class UiStore {
 
     setTimeout(() => {
       this.setSelectedDestination(destination);
-    }, 100);
+    }, 50);
   };
 
   @action

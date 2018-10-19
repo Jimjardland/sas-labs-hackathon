@@ -81,7 +81,7 @@ class SelectedDestination extends React.Component {
           <img
             src={`https://source.unsplash.com/260x150/?${get(
               destination,
-              'originCity.name'
+              'location.country'
             )}`}
           />
         </ImageWrap>
