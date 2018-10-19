@@ -16,6 +16,7 @@
     "@turf/helpers": "^5.1.5",
     "@zeit/next-css": "^1.0.1",
     "animejs": "^2.2.0",
+    "array-flatten": "^2.1.1",
     "body-parser": "^1.18.3",
     "chalk": "^2.4.1",
     "cloudinary": "^1.11.0",
