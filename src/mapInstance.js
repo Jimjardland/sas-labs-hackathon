@@ -78,7 +78,9 @@ class MapInstance {
       ]);
     });
 
-    this.map.fitBounds(bounds);
+    if (!this.src) {
+      this.map.fitBounds(bounds);
+    }
   };
 }
 
