@@ -19,20 +19,20 @@ class SelectedDestination extends React.Component {
 
   componentDidMount() {
     mapInstance.setMarker(
-      this.props.destination.coordinates,
+      [this.props.destination.longitude, this.props.destination.latitude],
       findDOMNode(this.wrapper.current)
     );
   }
 
   render() {
     const { destination } = this.props;
-    const { title } = destination;
+    const { formattedAddress } = destination;
 
-    if (this.state.mounted) return null;
+    // if (this.state.mounted) return null;
 
     return (
       <Wrapper innerRef={this.wrapper}>
-        <h2>{title}</h2>
+        <h2>{formattedAddress}</h2>
       </Wrapper>
     );
   }

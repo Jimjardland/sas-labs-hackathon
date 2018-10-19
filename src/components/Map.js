@@ -26,10 +26,9 @@ class Map extends React.Component {
       zoom: 2,
       center: [50.10229, 14.424629],
       pitch: 30,
-      maxZoom: 10
+      maxZoom: 10,
+      dragRotate: false
     });
-
-    // this.map.scrollZoom.disable();
 
     this.map.on('load', () => mapInstance.setMap(this.map, mapboxgl));
   }

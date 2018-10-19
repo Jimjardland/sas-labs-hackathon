@@ -34,7 +34,6 @@ class MainPage extends React.Component {
   }
 
   render() {
-    console.log(UiStore.destinations);
     return (
       <Container>
         <Intro />

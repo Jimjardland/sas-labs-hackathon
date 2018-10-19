@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.1.2",
+    "@turf/helpers": "^5.1.5",
     "animejs": "^2.2.0",
     "body-parser": "^1.18.3",
     "chalk": "^2.4.1",

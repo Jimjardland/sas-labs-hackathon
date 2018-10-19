@@ -1,13 +1,17 @@
-import { observable, action } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import months from '../constants/months';
 import emitter from '../uiEmitter';
+import mapInstance from '../mapInstance';
+
+let origins = [];
 
 class UiStore {
   @observable
   isPageLoading = true;
   @observable
   selectedDestination = null;
-
+  @observable
+  destinations = [];
   @observable
   selectedMonth = months[0];
 
@@ -16,11 +20,20 @@ class UiStore {
     this.selectedMonth = month;
   };
 
-  async fetchDestinations() {
-    fetch('http://localhost:4004/destinations')
+  fetchDestinations() {
+    fetch('/api/destinations')
       .then(res => res.json())
-      .then(data => {
-        console.log({ data });
+      .then(destinations => {
+        runInAction(() => {
+          this.destinations = destinations;
+
+          origins = []
+            .concat(...destinations.map(dest => dest.origins))
+            .filter(a => a.length)
+            .map(a => a[0]);
+
+          const [first] = origins;
+        });
       });
   }
 
@@ -30,6 +43,9 @@ class UiStore {
 
     setTimeout(() => {
       emitter.emit('pageLoaded');
+      // TODO
+      mapInstance.showLocations(origins);
+      this.setSelectedDestination(origins[0]);
     }, 200);
   };
 
