@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Map from './Map';
 import DatePicker from './MonthPicker';
+import Intro from './Intro';
 
 const Container = styled.div``;
 class MainPage extends React.Component {
@@ -10,6 +11,7 @@ class MainPage extends React.Component {
   render() {
     return (
       <Container>
+        <Intro />
         <Map />
         <DatePicker />
       </Container>

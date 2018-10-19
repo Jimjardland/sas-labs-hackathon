@@ -1,17 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
-import t from '../locale';
-import { primaryColor } from '../vars';
 
-const Text = styled.p`
-  color: ${primaryColor};
+const Container = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 100px;
+  z-index: 50;
+  color: white;
+  transform: translateX(-50%);
+`;
+
+const Title = styled.h1`
+  font-size: 48px;
 `;
 
 class Intro extends React.Component {
   componentDidMount() {}
 
   render() {
-    return <Text>{t('intro.text')}</Text>;
+    return (
+      <Container>
+        <Title>Lågpriskalender</Title>
+      </Container>
+    );
   }
 }
 
