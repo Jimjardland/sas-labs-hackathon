@@ -2,8 +2,34 @@ import { observable, action, runInAction } from 'mobx';
 import months from '../constants/months';
 import emitter from '../uiEmitter';
 import mapInstance from '../mapInstance';
+import get from 'lodash/get';
+import moment from 'moment';
 
+moment.locale('sv');
 let origins = [];
+
+const mapDestinations = destinations => {
+  return destinations.map(destination => {
+    const { flightProducts = [] } = destination;
+
+    const prices = {};
+
+    flightProducts.forEach(month => {
+      const m = moment(month.outBoundDate).format('MMM');
+
+      const price = get(month, 'lowestPrice.totalPrice');
+      if (price && !prices[m]) {
+        prices[m] = parseInt(price);
+      }
+    });
+
+    return {
+      ...destination,
+      city: get(destination, 'location.cityName'),
+      prices
+    };
+  });
+};
 
 class UiStore {
   @observable
@@ -24,6 +50,7 @@ class UiStore {
   @action
   setSelectedMonth = month => {
     this.selectedMonth = month;
+    this.updateLocations();
   };
 
   fetchDestinations() {
@@ -33,13 +60,7 @@ class UiStore {
         runInAction(() => {
           this.destinations = destinations;
 
-          origins = []
-            .concat(...destinations.map(dest => dest.origins))
-            .filter(Boolean)
-            .map(o => o.coordinates)
-            .filter(Boolean);
-
-          const [first] = origins;
+          origins = mapDestinations(destinations.filter(d => d.coordinates));
         });
       });
   }
@@ -50,9 +71,22 @@ class UiStore {
 
     setTimeout(() => {
       emitter.emit('pageLoaded');
+      this.updateLocations();
       // TODO
-      mapInstance.showLocations(origins);
     }, 200);
+  };
+
+  updateLocations = () => {
+    const final = origins.map(origin => {
+      const price = origin.prices[this.selectedMonth];
+
+      return {
+        ...origin,
+        price: price ? `${price} ${origin.currency}` : undefined
+      };
+    });
+
+    mapInstance.showLocations(final);
   };
 
   @action

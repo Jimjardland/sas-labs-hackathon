@@ -39,23 +39,30 @@ class MapInstance {
 
   showLocations = origins => {
     const points = origins.map(origin =>
-      point([origin.longitude, origin.latitude], {
-        city: origin.city
+      point([origin.coordinates.longitude, origin.coordinates.latitude], {
+        city: origin.city,
+        price: origin.price,
+        currency: origin.currency
       })
     );
 
     const srcId = 'circles';
-    this.map.addSource(srcId, {
+    const layerId = 'labels';
+
+    if (this.map.getLayer(layerId)) this.map.removeLayer(layerId);
+    if (this.map.getSource(srcId)) this.map.removeSource(srcId);
+
+    this.src = this.map.addSource(srcId, {
       type: 'geojson',
       data: featureCollection(points)
     });
 
-    this.map.addLayer({
-      id: 'labels',
+    this.currentTexts = this.map.addLayer({
+      id: layerId,
       type: 'symbol',
       source: srcId,
       layout: {
-        'text-field': '{city}'
+        'text-field': '{price}'
       },
       paint: {
         'text-color': 'white'
@@ -65,7 +72,10 @@ class MapInstance {
     const bounds = new this.mapboxgl.LngLatBounds();
 
     origins.forEach(origin => {
-      bounds.extend([origin.longitude, origin.latitude]);
+      bounds.extend([
+        origin.coordinates.longitude,
+        origin.coordinates.latitude
+      ]);
     });
 
     this.map.fitBounds(bounds);

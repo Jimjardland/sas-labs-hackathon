@@ -7,6 +7,7 @@ import { observer } from 'mobx-react';
 import anime from 'animejs';
 import { findDOMNode } from 'react-dom';
 import mapInstance from '../mapInstance';
+import get from 'lodash/get';
 
 const Wrapper = styled.div`
   display: inline-block;
@@ -54,7 +55,10 @@ class SelectedDestination extends React.Component {
     const element = findDOMNode(this.wrapper.current);
 
     mapInstance.setMarker(
-      [this.props.destination.longitude, this.props.destination.latitude],
+      [
+        this.props.destination.coordinates.longitude,
+        this.props.destination.coordinates.latitude
+      ],
       element.cloneNode(true)
     );
 
@@ -71,11 +75,15 @@ class SelectedDestination extends React.Component {
 
     if (this.state.mounted) return null;
 
-    console.log({ destination });
     return (
       <Wrapper innerRef={this.wrapper}>
         <ImageWrap>
-          <img src={`https://source.unsplash.com/260x150/?${country}`} />
+          <img
+            src={`https://source.unsplash.com/260x150/?${get(
+              destination,
+              'originCity.name'
+            )}`}
+          />
         </ImageWrap>
         <Inner>
           <h3>{formattedAddress}</h3>
