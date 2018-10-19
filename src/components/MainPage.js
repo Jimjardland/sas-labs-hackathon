@@ -10,6 +10,7 @@ import { bgColor } from '../vars';
 import MapInfo from './MapInfo';
 import RandomDestination from './RandomDestination';
 import TravelInfo from './TravelInfo';
+import Filters from './Filters';
 
 const Container = styled.div`
   height: 100vh;
@@ -48,6 +49,7 @@ class MainPage extends React.Component {
         <RandomDestination />
 
         {UiStore.showFlights && <TravelInfo />}
+        <Filters />
       </Container>
     );
   }

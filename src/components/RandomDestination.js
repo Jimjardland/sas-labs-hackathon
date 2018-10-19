@@ -4,7 +4,7 @@ import UiStore from '../stores/UiStore';
 
 const Wrapper = styled.div`
   color: white;
-  position: absolute;
+  position: fixed;
   left: 10px;
   bottom: 10px;
   cursor: pointer;

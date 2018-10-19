@@ -16,6 +16,9 @@ class UiStore {
   selectedMonth = months[0];
 
   @observable
+  priceFilter = 9449;
+
+  @observable
   showFlights = false;
 
   @action
@@ -70,6 +73,11 @@ class UiStore {
   @action
   toggleModdal = () => {
     this.showFlights = !this.showFlights;
+  };
+
+  @action
+  setPriceFilter = value => {
+    this.priceFilter = value;
   };
 }
 

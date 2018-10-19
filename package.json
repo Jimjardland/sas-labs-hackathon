@@ -14,6 +14,7 @@
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.1.2",
     "@turf/helpers": "^5.1.5",
+    "@zeit/next-css": "^1.0.1",
     "animejs": "^2.2.0",
     "body-parser": "^1.18.3",
     "chalk": "^2.4.1",
@@ -38,7 +39,9 @@
     "nodemon": "^1.18.4",
     "pageres": "^4.5.1",
     "react": "^16.5.2",
+    "react-compound-slider": "^0.16.2",
     "react-dom": "^16.5.2",
+    "react-rangeslider": "^2.2.0",
     "restify": "6.3.4",
     "simple-pg": "^1.0.0",
     "styled-components": "^3.4.9",

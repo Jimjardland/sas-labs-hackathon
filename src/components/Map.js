@@ -33,6 +33,7 @@ class Map extends React.Component {
     this.map.on('load', () => mapInstance.setMap(this.map, mapboxgl));
     this.map.on('drag', this.removeTitle);
     this.map.on('click', this.removeTitle);
+    this.map.on('wheel', this.removeTitle);
   }
 
   removeTitle = once(() => {
