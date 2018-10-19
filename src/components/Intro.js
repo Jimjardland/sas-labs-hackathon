@@ -8,10 +8,15 @@ const Container = styled.div`
   z-index: 50;
   color: white;
   transform: translateX(-50%);
+  text-align: center;
 `;
 
 const Title = styled.h1`
   font-size: 48px;
+`;
+
+const Text = styled.p`
+  font-size: 20px;
 `;
 
 class Intro extends React.Component {
@@ -21,6 +26,7 @@ class Intro extends React.Component {
     return (
       <Container>
         <Title>Lågpriskalender</Title>
+        <Text>Det ska vara kul att resa</Text>
       </Container>
     );
   }

@@ -1,1 +1,14 @@
-export default ['Oct', 'Nov', 'Dec', 'Jan', 'Feb'];
+export default [
+  'Okt',
+  'Nov',
+  'Dec',
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep'
+];

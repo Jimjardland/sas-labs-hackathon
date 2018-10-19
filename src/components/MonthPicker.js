@@ -21,7 +21,8 @@ const Part = styled.div`
   padding: 10px 20px;
   border-bottom: 1px solid ${darkest};
   cursor: pointer;
-
+  text-transform: uppercase;
+  font-size: 14px;
   &:last-child {
     border-bottom: 0;
   }

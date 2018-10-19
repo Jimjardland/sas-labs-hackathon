@@ -14,7 +14,7 @@ injectGlobal`
 
 html,body {
   background: ${bgColor};
-  font-family: 'ScandinavianNew', 'Helvetica',sans-serif;
+  font-family:'ScandinavianNewRegular' , 'Helvetica',sans-serif;
   color: ${textColor};
   font-size: 16px;
   line-height: 1.5;
@@ -24,6 +24,8 @@ html,body {
 h1,h2,h3,h4 {
   font-weight: bold;
   text-transform: uppercase;
+  font-family:'ScandinavianNew', 'Helvetica',sans-serif;
+
 }
 
 input {
@@ -40,7 +42,7 @@ input {
 }
 
 @font-face {
-  font-family: 'ScandinavianNew';
+  font-family: 'ScandinavianNewRegular';
   src: url('/fonts/ScandinavianNew-Regular.woff2') format('woff2'),
       url('/fonts/ScandinavianNew-Regular.woff') format('woff'),
       url('/fonts/ScandinavianNew-Regular.ttf') format('truetype');

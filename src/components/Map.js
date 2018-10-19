@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { primaryColor } from '../vars';
+import mapInstance from '../mapInstance';
 
 let mapboxgl;
 const Wrapper = styled.div`
@@ -29,6 +30,8 @@ class Map extends React.Component {
     });
 
     this.map.scrollZoom.disable();
+
+    this.map.on('load', () => mapInstance.setMap(this.map));
   }
 
   render() {
