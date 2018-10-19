@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import t from '../locale';
 import { primaryColor } from '../vars';
 import Loader from './Loader';
 import ExampleSenteces from './ExampleSenteces';

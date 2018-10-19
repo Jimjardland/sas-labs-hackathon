@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { primaryColor } from '../vars';
 
 const rotate = keyframes`
   100% {
@@ -34,7 +33,7 @@ const Spinner = styled.svg`
   height: 50px;
 
   & .path {
-    stroke: ${primaryColor};
+    stroke: white;
     stroke-linecap: round;
     animation: ${dash} 1.5s ease-in-out infinite;
   }

@@ -1,17 +1,34 @@
 import React from 'react';
 import styled from 'styled-components';
-import t from '../locale';
-import { primaryColor } from '../vars';
+
+const Container = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 100px;
+  z-index: 50;
+  color: white;
+  transform: translateX(-50%);
+  text-align: center;
+`;
+
+const Title = styled.h1`
+  font-size: 48px;
+`;
 
 const Text = styled.p`
-  color: ${primaryColor};
+  font-size: 20px;
 `;
 
 class Intro extends React.Component {
   componentDidMount() {}
 
   render() {
-    return <Text>{t('intro.text')}</Text>;
+    return (
+      <Container>
+        <Title>Lågpriskalender</Title>
+        <Text>Det ska vara kul att resa</Text>
+      </Container>
+    );
   }
 }
 
