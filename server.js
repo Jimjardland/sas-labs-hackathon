@@ -3,24 +3,25 @@ const compression = require('compression');
 const express = require('express');
 const next = require('next');
 const path = require('path');
+const restify = require('restify');
+const routes = require('./lib/routes');
 
 const bodyParser = require('body-parser');
-const routes = require('./routes');
+const nextRoutes = require('./routes');
 
 const PORT = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler();
-const handler = routes.getRequestHandler(nextApp);
+const handler = nextRoutes.getRequestHandler(nextApp);
 
 nextApp.prepare().then(() => {
-  // express code here
   const app = express();
   app.use('/fonts', express.static(path.join(__dirname, 'fonts')));
-
   app.use(compression());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.use('/api', routes);
   app.use(handler);
 
   app.get('*', (req, res) => handle(req, res));

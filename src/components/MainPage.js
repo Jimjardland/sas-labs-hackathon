@@ -7,6 +7,7 @@ import { observer } from 'mobx-react';
 import UiStore from '../stores/UiStore';
 import Loader from './Loader';
 import { bgColor } from '../vars';
+import MapInfo from './MapInfo';
 
 const Container = styled.div`
   height: 100vh;
@@ -28,9 +29,12 @@ const PageLoader = styled.div`
 
 @observer
 class MainPage extends React.Component {
-  componentDidMount() {}
+  componentDidMount() {
+    UiStore.fetchDestinations();
+  }
 
   render() {
+    console.log(UiStore.destinations);
     return (
       <Container>
         <Intro />
@@ -39,6 +43,7 @@ class MainPage extends React.Component {
         <PageLoader active={UiStore.isPageLoading}>
           <Loader />
         </PageLoader>
+        <MapInfo />
       </Container>
     );
   }

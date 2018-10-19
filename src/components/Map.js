@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { primaryColor } from '../vars';
 import mapInstance from '../mapInstance';
+// import destinations from '../../tmp/destinations.json';
 
 let mapboxgl;
 const Wrapper = styled.div`
@@ -22,16 +23,15 @@ class Map extends React.Component {
     this.map = new mapboxgl.Map({
       container: this.container.current,
       style: 'mapbox://styles/jontis/cjfyb4vzm6hm02rob93cz4g4o',
-      zoom: 4.5,
-      minZoom: 3,
-      maxZoom: 10,
-      center: [17.06324, 61.334591],
-      pitch: 30
+      zoom: 2,
+      center: [50.10229, 14.424629],
+      pitch: 30,
+      maxZoom: 10
     });
 
-    this.map.scrollZoom.disable();
+    // this.map.scrollZoom.disable();
 
-    this.map.on('load', () => mapInstance.setMap(this.map));
+    this.map.on('load', () => mapInstance.setMap(this.map, mapboxgl));
   }
 
   render() {

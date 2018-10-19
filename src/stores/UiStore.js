@@ -5,6 +5,8 @@ import emitter from '../uiEmitter';
 class UiStore {
   @observable
   isPageLoading = true;
+  @observable
+  selectedDestination = null;
 
   @observable
   selectedMonth = months[0];
@@ -14,6 +16,14 @@ class UiStore {
     this.selectedMonth = month;
   };
 
+  async fetchDestinations() {
+    fetch('http://localhost:4004/destinations')
+      .then(res => res.json())
+      .then(data => {
+        console.log({ data });
+      });
+  }
+
   @action
   setLoaded = () => {
     this.isPageLoading = false;
@@ -22,6 +32,11 @@ class UiStore {
       emitter.emit('pageLoaded');
     }, 200);
   };
+
+  @action
+  setSelectedDestination(destination) {
+    this.selectedDestination = destination;
+  }
 }
 
 export default new UiStore();

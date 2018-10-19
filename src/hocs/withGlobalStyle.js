@@ -11,7 +11,9 @@ injectGlobal`
 *, *::before, *::after {
   box-sizing: inherit;
 }
-
+.mapboxgl-ctrl-bottom-right {
+  display:none;
+}
 html,body {
   background: ${bgColor};
   font-family:'ScandinavianNewRegular' , 'Helvetica',sans-serif;

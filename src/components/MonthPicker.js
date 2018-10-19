@@ -7,6 +7,7 @@ import { observer } from 'mobx-react';
 import emitter from '../uiEmitter';
 import anime from 'animejs';
 import { findDOMNode } from 'react-dom';
+import throttle from 'lodash/throttle';
 
 const Container = styled.div`
   position: absolute;
@@ -54,8 +55,11 @@ class MonthPicker extends React.Component {
     });
   };
 
+  setScrollListener = () => {};
+
   componentDidMount() {
     emitter.on('pageLoaded', this.show);
+    this.setScrollListener();
   }
 
   componentWillUnmount() {
