@@ -1,0 +1,53 @@
+{
+  "meta.title": {
+    "sv": "Swedens biggest problem"
+  },
+  "meta.description": {
+    "sv": "Swedens biggest problem is a site that deals with swedens problems lol"
+  },
+  "intro.title": {
+    "sv": "Sweden's biggest problem",
+    "en": "Sweden's biggest problem"
+  },
+  "intro.text": {
+    "sv": "Crowdfunding ideas in order to solve our most important humitarian problems.",
+    "en": "Crowdfunding ideas in order to solve our most important humitarian problems."
+  },
+  "complete.title": {
+    "sv": "Share with your friends",
+    "en": "Share with your friends"
+  },
+  "complete.text": {
+    "sv": "I think Swedens biggest problem is",
+    "en": "I think Swedens biggest problem is"
+  },
+  "example1": {
+    "sv": "Dyrt med bensin.",
+    "en": "Cillum commodo labore magna occaecat adipisicing."
+  },
+  "example2": {
+    "sv": "SD SD SD SD",
+    "en": "Cillum commodo labore magna occaecat adipisicing."
+  },
+  "example3": {
+    "sv": "Bert Karlsson 4 president",
+    "en": "Cillum commodo labore magna occaecat adipisicing."
+  },
+  "input.start": {
+    "sv": "Min viktigaste fråga är..."
+  },
+  "list.button": {
+    "sv": "What does sweden think so far?",
+    "en": "What does sweden think so far?"
+  },
+  "readmore": {
+    "sv": "Read more"
+  },
+  "press": {
+    "sv": "Press"
+  },
+  "list.close": {
+    "sv": "Close",
+    "en": "Close"
+  }
+}
