@@ -15,6 +15,9 @@ class UiStore {
   @observable
   selectedMonth = months[0];
 
+  @observable
+  showFlights = false;
+
   @action
   setSelectedMonth = month => {
     this.selectedMonth = month;
@@ -29,8 +32,9 @@ class UiStore {
 
           origins = []
             .concat(...destinations.map(dest => dest.origins))
-            .filter(a => a.length)
-            .map(a => a[0]);
+            .filter(Boolean)
+            .map(o => o.coordinates)
+            .filter(Boolean);
 
           const [first] = origins;
         });
@@ -45,7 +49,6 @@ class UiStore {
       emitter.emit('pageLoaded');
       // TODO
       mapInstance.showLocations(origins);
-      this.setSelectedDestination(origins[0]);
     }, 200);
   };
 
@@ -53,6 +56,21 @@ class UiStore {
   setSelectedDestination(destination) {
     this.selectedDestination = destination;
   }
+
+  @action
+  randomDestination = () => {
+    this.selectedDestination = null;
+    const destination = origins[Math.floor(Math.random() * origins.length)];
+
+    setTimeout(() => {
+      this.setSelectedDestination(destination);
+    }, 100);
+  };
+
+  @action
+  toggleModdal = () => {
+    this.showFlights = !this.showFlights;
+  };
 }
 
 export default new UiStore();

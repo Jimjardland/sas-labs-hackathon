@@ -8,6 +8,8 @@ import UiStore from '../stores/UiStore';
 import Loader from './Loader';
 import { bgColor } from '../vars';
 import MapInfo from './MapInfo';
+import RandomDestination from './RandomDestination';
+import TravelInfo from './TravelInfo';
 
 const Container = styled.div`
   height: 100vh;
@@ -43,6 +45,9 @@ class MainPage extends React.Component {
           <Loader />
         </PageLoader>
         <MapInfo />
+        <RandomDestination />
+
+        {UiStore.showFlights && <TravelInfo />}
       </Container>
     );
   }

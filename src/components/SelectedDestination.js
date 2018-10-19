@@ -8,7 +8,40 @@ import anime from 'animejs';
 import { findDOMNode } from 'react-dom';
 import mapInstance from '../mapInstance';
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  display: inline-block;
+  position: relative;
+  z-index: 500;
+  background: #fff;
+  border-radius: 4px;
+  color: #333;
+  max-width: 250px;
+
+  img {
+    max-width: 100%;
+  }
+`;
+
+const Inner = styled.div`
+  padding: 10px;
+`;
+
+const Stats = styled.div`
+  font-size: 14px;
+  color: #3c3c3c;
+`;
+
+const Flights = styled.div`
+  color: ${light};
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+`;
+
+const ImageWrap = styled.div`
+  height: 130px;
+  overflow: hidden;
+`;
 
 class SelectedDestination extends React.Component {
   wrapper = React.createRef();
@@ -18,21 +51,44 @@ class SelectedDestination extends React.Component {
   };
 
   componentDidMount() {
+    const element = findDOMNode(this.wrapper.current);
+
     mapInstance.setMarker(
       [this.props.destination.longitude, this.props.destination.latitude],
-      findDOMNode(this.wrapper.current)
+      element.cloneNode(true)
     );
+
+    document.querySelector('#flightToggle').addEventListener('click', () => {
+      UiStore.toggleModdal();
+    });
+
+    this.setState({ mounted: true });
   }
 
   render() {
     const { destination } = this.props;
-    const { formattedAddress } = destination;
+    const { formattedAddress, country } = destination;
 
-    // if (this.state.mounted) return null;
+    if (this.state.mounted) return null;
 
+    console.log({ destination });
     return (
       <Wrapper innerRef={this.wrapper}>
-        <h2>{formattedAddress}</h2>
+        <ImageWrap>
+          <img src={`https://source.unsplash.com/260x150/?${country}`} />
+        </ImageWrap>
+        <Inner>
+          <h3>{formattedAddress}</h3>
+          <Stats>
+            <div>🌈 LGBT friendly</div>
+            <div>🍽 3 Michelin star</div>
+            <div>🥦 Vegan friendly</div>
+            <div>☀️ Average 26°</div>
+          </Stats>
+          <Flights id="flightToggle" onClick={() => console.log('asd')}>
+            Visa tillgängliga flyg
+          </Flights>
+        </Inner>
       </Wrapper>
     );
   }

@@ -8,17 +8,23 @@ class MapInstance {
     UiStore.setLoaded();
   }
 
+  currentMarker;
+
   setMarker = (coordinates, element) => {
-    console.log({ coordinates, element });
-    new this.mapboxgl.Marker(element)
+    if (this.currentMarker) {
+      this.currentMarker.remove();
+    }
+
+    this.currentMarker = new this.mapboxgl.Marker(element)
       .setLngLat(coordinates)
-      .setPopup(
-        new this.mapboxgl.Popup({ offset: 25 }) // add popups
-          .setHTML('<h3>hej</h3>')
-      )
       .addTo(this.map);
 
-    this.map.flyTo({ center: coordinates });
+    console.log({ coordinates });
+    this.flyTo(coordinates);
+  };
+
+  flyTo = coordinates => {
+    this.map.flyTo({ center: coordinates, zoom: 8 });
   };
 
   addClicks = () => {
@@ -43,12 +49,6 @@ class MapInstance {
   };
 
   showLocations = origins => {
-    // origins.forEach(origin => {
-    //   new this.mapboxgl.Marker()
-    //     .setLngLat([origin.latitude, origin.longitude])
-    //     .addTo(this.map);
-    // });
-
     const points = origins.map(origin =>
       point([origin.longitude, origin.latitude], {
         city: origin.city
