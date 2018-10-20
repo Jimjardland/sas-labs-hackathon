@@ -25,6 +25,9 @@ const fadeIn = keyframes`
 injectGlobal`
 .selected-marker {
   display:inline-block;
+  // width: 340px;
+
+
 }
 
   .fadeIn {
@@ -39,6 +42,17 @@ injectGlobal`
   }
 `;
 
+const Cross = styled.div`
+  cursor: pointer;
+  position: absolute;
+  color: white;
+  z-index: 4;
+
+  right: 10px;
+  top: 10px;
+  line-height: 1;
+  font-size: 27px;
+`;
 //   animation: ${fadeIn} 0.4s ease forwards;
 const Wrapper = styled.div`
   display: inline-block;
@@ -53,6 +67,7 @@ const Wrapper = styled.div`
   @media (max-width: 730px) {
     margin-right: 51px;
     margin-top: -57px;
+    width: 250px;
   }
 
   img {
@@ -85,6 +100,10 @@ const Flights = styled.div`
 const ImageWrap = styled.div`
   height: 175px;
   overflow: hidden;
+
+  @media (max-width: 730px) {
+    height: 125px;
+  }
 `;
 const Airport = styled.span`
   color: #8b8b8b;
@@ -210,6 +229,7 @@ class SelectedDestination extends React.Component {
 
     return (
       <Wrapper id="selected">
+        <Cross onClick={UiStore.clearSelected}>x</Cross>
         <Slider active={this.state.calenderView}>
           {this.firstView()}
           <Calendar />

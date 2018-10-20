@@ -26,7 +26,7 @@ class MapInstance {
     this.markerContainer = document.createElement('div');
     this.markerContainer.className = 'selected-marker';
     this.marker = new mapboxgl.Marker(this.markerContainer, {
-      offset: [-120, 0]
+      // offset: [-120, 0]
     })
       .setLngLat([0, 0])
       .addTo(this.map);
@@ -55,8 +55,6 @@ class MapInstance {
     this.currentMarker = currentElem;
 
     const add = () => {
-      this.marker.setLngLat(coordinates);
-
       ReactDOM.render(
         React.createElement(SelectedDestination, {
           destination
@@ -64,6 +62,8 @@ class MapInstance {
         this.markerContainer
       );
       currentElem && currentElem.classList.add('fadeIn');
+      this.marker.setLngLat(coordinates);
+      this.flyTo(coordinates);
     };
 
     if (currentElem) {

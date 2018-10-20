@@ -18,6 +18,10 @@ const Container = styled.div`
   border: 1px solid ${darkest};
   border-radius: 5px 0 0 5px;
   opacity: 0;
+
+  @media (max-width: 730px) {
+    margin-top: -20px;
+  }
 `;
 
 const Part = styled.div`
@@ -35,7 +39,7 @@ const Part = styled.div`
 
   @media (max-width: 730px) {
     font-size: 12px;
-    padding: 8px 12px;
+    padding: 5px 12px;
   }
 `;
 

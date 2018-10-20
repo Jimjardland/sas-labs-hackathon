@@ -15,6 +15,7 @@ const Wrapper = styled.div`
 
   @media (max-width: 730px) {
     font-size: 12px;
+    top: 5px;
   }
 `;
 

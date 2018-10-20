@@ -4,6 +4,7 @@ import emitter from '../uiEmitter';
 import mapInstance from '../mapInstance';
 import get from 'lodash/get';
 import moment from 'moment';
+import regions from '../constants/regions';
 
 moment.locale('sv');
 let origins = [];
@@ -89,6 +90,15 @@ class UiStore {
     setTimeout(() => {
       emitter.emit('pageLoaded');
       this.updateLocations();
+
+      const coords = this.destinations
+        .filter(d =>
+          regions[0].airports.includes(get(d, 'destinationAirport.code'))
+        )
+        .filter(d => d.coordinates);
+      // .map(d => [d.coordinates.latitude, d.coordinates.latitude]);
+
+      mapInstance.fitBounds(coords);
       // TODO
     }, 200);
   };
@@ -140,9 +150,14 @@ class UiStore {
   };
 
   @action
-  setPriceFilter = value => {
+  clearSelected = () => {
     this.setSelectedDestination(null);
     mapInstance.removeCurrentMarker();
+  };
+
+  @action
+  setPriceFilter = value => {
+    this.clearSelected();
     this.priceFilter = value;
     this.updateLocations();
   };

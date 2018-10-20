@@ -11,7 +11,9 @@ const Container = styled.div`
   top: 100px;
   z-index: 50;
   color: white;
-  transform: translateX(-50%);
+  left: 0;
+  width: 100%;
+
   text-align: center;
 
   @media (max-width: 730px) {
@@ -37,26 +39,18 @@ const Text = styled.p`
 class Intro extends React.Component {
   title = React.createRef();
   text = React.createRef();
-
+  state = { hideAll: false };
   show = () => {
-    anime
-      .timeline({ loop: false })
-      .add({
-        targets: findDOMNode(this.title.current),
-        opacity: [0, 1],
-        translateY: [-20, 0]
-      })
-      .add({
-        targets: findDOMNode(this.text.current),
-        opacity: [0, 1],
-        translateY: [-20, 0],
-        offset: '-=450',
-        complete: () => {
-          setTimeout(() => {
-            this.hide();
-          }, 3000);
-        }
-      });
+    anime.timeline({ loop: false }).add({
+      targets: findDOMNode(this.title.current),
+      opacity: [0, 1],
+      translateY: [-20, 0],
+      complete: () => {
+        setTimeout(() => {
+          this.hide();
+        }, 3000);
+      }
+    });
   };
 
   hide = once(() => {
@@ -68,7 +62,10 @@ class Intro extends React.Component {
     anime({
       targets: findDOMNode(this.text.current),
       opacity: [1, 0],
-      translateY: [0, -20]
+      translateY: [0, -20],
+      complete: () => {
+        this.setState({ hideAll: true });
+      }
     });
   });
 
@@ -83,10 +80,11 @@ class Intro extends React.Component {
   }
 
   render() {
+    if (this.state.hideAll) return null;
+
     return (
       <Container>
-        <Title innerRef={this.title}>Lågpriskalender</Title>
-        <Text innerRef={this.text}>Det ska vara kul att resa</Text>
+        <Title innerRef={this.title}>Lågpriskalender 2.0</Title>
       </Container>
     );
   }
