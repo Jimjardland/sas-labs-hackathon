@@ -120,7 +120,7 @@ class MapInstance {
       type: 'symbol',
       source: srcId,
       layout: {
-        'text-field': '{price} {bonusProgress}%'
+        'text-field': '{price}'
       },
       paint: {
         'text-color': 'white'
