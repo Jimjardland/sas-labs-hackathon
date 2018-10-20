@@ -148,13 +148,15 @@ class UiStore {
 
   @action
   focusRegion = regions => {
+    this.setSelectedDestination(null);
+    mapInstance.removeCurrentMarker();
+
     const coords = this.destinations
       .filter(d => regions.includes(get(d, 'destinationAirport.code')))
       .filter(d => d.coordinates);
     // .map(d => [d.coordinates.latitude, d.coordinates.latitude]);
 
     mapInstance.fitBounds(coords);
-    console.log({ coords, regions });
   };
 }
 
