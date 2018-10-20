@@ -36,7 +36,7 @@ class MapInstance {
     const currentElem = document.querySelector('#selected');
 
     if (currentElem) {
-      currentElem.remove();
+      ReactDOM.unmountComponentAtNode(this.markerContainer);
     }
   }
 

@@ -8,6 +8,7 @@ import anime from 'animejs';
 import { findDOMNode, createPortal } from 'react-dom';
 import mapInstance from '../mapInstance';
 import get from 'lodash/get';
+import Calendar from './Calendar';
 
 const fadeIn = keyframes`
   from {
@@ -47,6 +48,7 @@ const Wrapper = styled.div`
   border-radius: 4px;
   color: #333;
   width: 340px;
+  overflow: hidden;
 
   @media (max-width: 730px) {
     margin-right: 51px;
@@ -89,9 +91,7 @@ const Airport = styled.span`
   font-size: 13px;
   margin-left: 5px;
 `;
-const OutSide = styled.div`
-  display: inline-block;
-`;
+
 const Step = styled.div`
   font-size: 13px;
 
@@ -106,13 +106,60 @@ const Bonus = styled.span`
   color: ${light};
 `;
 
+const Slider = styled.div`
+  display: flex;
+  width: 200%;
+  transition: transform 0.25s ease-in-out;
+  transform: ${props => (props.active ? 'translateX(-50%)' : 'translateX(0)')};
+`;
+
+const SlidePart = styled.div`
+  flex: 1;
+  width: 100%;
+`;
+
+const Select = styled.div`
+  display: flex;
+  margin-top: 10px;
+  border-top: 1px solid ${darkest};
+  margin-bottom: -1px;
+`;
+
+const SelectItem = styled.div`
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  cusor: pointer;
+  background-color: ${props => (props.active ? middle : 'white')};
+  color: ${props => (props.active ? 'white' : middle)};
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  &:hover {
+    color: white;
+    background-color: ${middle};
+  }
+`;
+
 class SelectedDestination extends React.Component {
-  render() {
+  state = {
+    calenderView: false
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      get(prevState, 'destination.city') !== get(prevState, 'destination.city')
+    ) {
+      this.setState({ calenderView: false });
+    }
+  }
+
+  firstView() {
     const { destination } = this.props;
     const { formattedAddress, country, requiredPoints } = destination;
 
     return (
-      <Wrapper id="selected">
+      <SlidePart>
         <ImageWrap>
           <img
             src={`https://source.unsplash.com/340x175/?${get(
@@ -134,7 +181,11 @@ class SelectedDestination extends React.Component {
             </span>
           </Step>
           <Step>
-            Krävda EuroBonus poäng: <Bonus>{requiredPoints}</Bonus>
+            Krävda EuroBonus poäng:{' '}
+            <Bonus>
+              {UiStore.user.points} / {requiredPoints}{' '}
+              {UiStore.user.points > requiredPoints && '✅'}
+            </Bonus>
           </Step>
           <Step>
             Platser kvar: <Bonus>23</Bonus>
@@ -145,10 +196,38 @@ class SelectedDestination extends React.Component {
             <div>🍽 3 Michelin star</div>
             <div>☀️ Average 26°</div>
           </Stats>
-          <Flights onClick={UiStore.toggleModdal} id="flightToggle">
-            Visa tillgängliga flyg
-          </Flights>
         </Inner>
+      </SlidePart>
+    );
+  }
+
+  secondView() {
+    return <SlidePart>boka</SlidePart>;
+  }
+
+  render() {
+    const { destination } = this.props;
+
+    return (
+      <Wrapper id="selected">
+        <Slider active={this.state.calenderView}>
+          {this.firstView()}
+          <Calendar />
+        </Slider>
+        <Select>
+          <SelectItem
+            onClick={() => this.setState({ calenderView: false })}
+            active={!this.state.calenderView}
+          >
+            Info
+          </SelectItem>
+          <SelectItem
+            onClick={() => this.setState({ calenderView: true })}
+            active={this.state.calenderView}
+          >
+            Boka
+          </SelectItem>
+        </Select>
       </Wrapper>
     );
   }

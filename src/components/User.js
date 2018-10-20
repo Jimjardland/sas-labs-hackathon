@@ -12,6 +12,10 @@ const Wrapper = styled.div`
   padding: 5px;
   text-align: right;
   background: ${darkest};
+
+  @media (max-width: 730px) {
+    font-size: 12px;
+  }
 `;
 
 const Name = styled.div``;

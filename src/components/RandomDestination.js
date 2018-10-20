@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import UiStore from '../stores/UiStore';
+import { darkest } from '../vars';
 
 const Wrapper = styled.div`
   color: white;
@@ -10,6 +11,10 @@ const Wrapper = styled.div`
   cursor: pointer;
   font-weight: bold;
   font-family: 'ScandinavianNew', 'Helvetica', sans-serif;
+  border-radius: 4px;
+  padding: 5px;
+  text-align: right;
+  background: ${darkest};
 
   @media (max-width: 730px) {
     bottom: auto;

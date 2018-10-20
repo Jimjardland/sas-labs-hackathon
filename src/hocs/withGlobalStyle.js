@@ -25,10 +25,15 @@ html,body {
   overflow:hidden;
 }
 
-h1,h2,h3,h4 {
+h1,h2{
+  font-family: ScandinavianNew-Black;
+  text-transform: uppercase;
+}
+  
+h3,h4 {
   font-weight: bold;
   text-transform: uppercase;
-  font-family:'ScandinavianNew', 'Helvetica',sans-serif;
+  font-family:'ScandinavianNew', 'Helvetica',sans-serif;  
 
 }
 
