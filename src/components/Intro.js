@@ -52,12 +52,27 @@ class Intro extends React.Component {
       });
   };
 
+  hide = () => {
+    anime({
+      targets: findDOMNode(this.title.current),
+      opacity: [1, 0],
+      translateY: [0, -20]
+    });
+    anime({
+      targets: findDOMNode(this.text.current),
+      opacity: [1, 0],
+      translateY: [0, -20]
+    });
+  };
+
   componentDidMount() {
     emitter.on('showHeader', this.show);
+    emitter.on('mapTouched', this.hide);
   }
 
   componentWillUnmount() {
     emitter.off('showHeader', this.show);
+    emitter.off('mapTouched', this.hide);
   }
 
   render() {

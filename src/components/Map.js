@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { primaryColor } from '../vars';
 import mapInstance from '../mapInstance';
-// import destinations from '../../tmp/destinations.json';
+import once from 'lodash/once';
+import emitter from '../uiEmitter';
 
-let mapboxgl;
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
@@ -17,7 +17,7 @@ class Map extends React.Component {
   container = React.createRef();
 
   componentDidMount() {
-    mapboxgl = require('mapbox-gl');
+    const mapboxgl = require('mapbox-gl');
     mapboxgl.accessToken = accessToken;
 
     this.map = new mapboxgl.Map({
@@ -31,7 +31,14 @@ class Map extends React.Component {
     });
 
     this.map.on('load', () => mapInstance.setMap(this.map, mapboxgl));
+    this.map.on('drag', this.removeTitle);
+    this.map.on('click', this.removeTitle);
+    this.map.on('wheel', this.removeTitle);
   }
+
+  removeTitle = once(() => {
+    emitter.emit('mapTouched');
+  });
 
   render() {
     return <Wrapper innerRef={this.container} />;

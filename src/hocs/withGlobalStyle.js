@@ -6,6 +6,7 @@ injectGlobal`
 * {
   margin: 0;
   padding: 0;
+  outline: none;
 }
 
 *, *::before, *::after {
@@ -89,7 +90,7 @@ input {
 }
 
 @font-face {
-  font-family: 'ScandinavianNew';
+  font-family: 'ScandinavianNew-Black';
   src: url('/fonts/ScandinavianNew-Black.woff2') format('woff2'),
       url('/fonts/ScandinavianNew-Black.woff') format('woff'),
       url('/fonts/ScandinavianNew-Black.ttf') format('truetype');
