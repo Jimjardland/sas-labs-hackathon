@@ -181,6 +181,7 @@ class SelectedDestination extends React.Component {
       <SlidePart>
         <ImageWrap>
           <img
+            id="selected-img"
             src={`https://source.unsplash.com/340x175/?${get(
               destination,
               'location.country'

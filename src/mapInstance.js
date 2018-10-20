@@ -69,6 +69,7 @@ class MapInstance {
     if (currentElem) {
       currentElem.classList.add('fadeOut');
       currentElem.classList.remove('fadeIn');
+      document.getElementById('selected-img').src = '';
 
       setTimeout(() => {
         currentElem.classList.remove('fadeOut');
