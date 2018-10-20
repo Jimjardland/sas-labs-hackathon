@@ -3,8 +3,13 @@ import { featureCollection, point } from '@turf/helpers';
 import throttle from 'lodash/throttle';
 import get from 'lodash/get';
 import once from 'lodash/once';
+import SelectedDestination from './components/SelectedDestination';
+import ReactDOM from 'react-dom';
+import React from 'react';
 
 class MapInstance {
+  selectedContainer;
+
   setMap(map, mapboxgl) {
     this.map = map;
     this.mapboxgl = mapboxgl;
@@ -17,13 +22,63 @@ class MapInstance {
         this.removeCurrentMarker();
       }, 400)
     );
+
+    this.markerContainer = document.createElement('div');
+    this.markerContainer.className = 'selected-marker';
+    this.marker = new mapboxgl.Marker(this.markerContainer, {
+      offset: [-120, 0]
+    })
+      .setLngLat([0, 0])
+      .addTo(this.map);
   }
 
   removeCurrentMarker() {
-    if (this.currentMarker) {
-      this.currentMarker.remove();
+    const currentElem = document.querySelector('#selected');
+
+    if (currentElem) {
+      currentElem.remove();
     }
   }
+
+  setDestination = destination => {
+    if (!destination) {
+      return this.removeCurrentMarker();
+    }
+    const coordinates = [
+      destination.coordinates.longitude,
+      destination.coordinates.latitude
+    ];
+
+    this.flyTo(coordinates);
+
+    const currentElem = document.querySelector('#selected');
+    this.currentMarker = currentElem;
+
+    const add = () => {
+      this.marker.setLngLat(coordinates);
+
+      ReactDOM.render(
+        React.createElement(SelectedDestination, {
+          destination
+        }),
+        this.markerContainer
+      );
+      currentElem && currentElem.classList.add('fadeIn');
+    };
+
+    if (currentElem) {
+      currentElem.classList.add('fadeOut');
+      currentElem.classList.remove('fadeIn');
+
+      setTimeout(() => {
+        currentElem.classList.remove('fadeOut');
+
+        add();
+      }, 350);
+    } else {
+      add();
+    }
+  };
 
   currentMarker;
 
@@ -55,25 +110,6 @@ class MapInstance {
     });
   });
 
-  setMarker = (coordinates, element) => {
-    this.flyTo(coordinates);
-
-    const add = () => {
-      this.currentMarker = new this.mapboxgl.Marker(element)
-        .setLngLat(coordinates)
-        .addTo(this.map);
-    };
-
-    if (this.currentMarker) {
-      setTimeout(() => {
-        this.currentMarker.remove();
-        add();
-      }, 200);
-    } else {
-      add();
-    }
-  };
-
   flyTo = coordinates => {
     this.map.flyTo({ center: coordinates, zoom: 5 });
   };
@@ -97,7 +133,7 @@ class MapInstance {
         city: origin.city,
         price: origin.price,
         currency: origin.currency,
-        bonusProgress: origin.bonusProgress,
+        bonusProgress: '✅', //origin.bonusProgress,
         airportCode: origin.location.airportCode
       })
     );

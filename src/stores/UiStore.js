@@ -124,7 +124,8 @@ class UiStore {
 
     setTimeout(() => {
       this.selectedDestination = destination;
-    }, 250);
+      mapInstance.setDestination(destination);
+    }, 50);
   }
 
   @action

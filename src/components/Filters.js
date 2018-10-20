@@ -60,7 +60,6 @@ class Filters extends React.Component {
             <RegionSelect />
           </Part>
           <Part>
-            <h4>Pris</h4>
             <PriceSlider />
           </Part>
         </Wrapper>

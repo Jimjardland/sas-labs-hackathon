@@ -10,9 +10,7 @@ class MapInfo extends React.Component {
 
     return (
       <React.Fragment>
-        {selectedDestination && (
-          <SelectedDestination destination={selectedDestination} />
-        )}
+        <SelectedDestination destination={selectedDestination} />
       </React.Fragment>
     );
   }

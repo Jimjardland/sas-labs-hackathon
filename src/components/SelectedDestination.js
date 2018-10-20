@@ -5,7 +5,7 @@ import months from '../constants/months';
 import UiStore from '../stores/UiStore';
 import { observer } from 'mobx-react';
 import anime from 'animejs';
-import { findDOMNode } from 'react-dom';
+import { findDOMNode, createPortal } from 'react-dom';
 import mapInstance from '../mapInstance';
 import get from 'lodash/get';
 
@@ -22,13 +22,11 @@ const fadeIn = keyframes`
 `;
 
 injectGlobal`
-  .mapboxgl-marker #selected {
-    opacity: 0;
-    animation-delay: 0.2s
-  }
+.selected-marker {
+  display:inline-block;
+}
 
-  .mapboxgl-marker.fadeIn #selected{
-    
+  .fadeIn {
     animation: ${fadeIn} 0.4s ease forwards;
   }
 
@@ -36,10 +34,11 @@ injectGlobal`
     transition: opacity 0.3s ease;
   }
   .fadeOut {
-    opacity: 0 !important;
+     opacity: 0 !important;
   }
 `;
 
+//   animation: ${fadeIn} 0.4s ease forwards;
 const Wrapper = styled.div`
   display: inline-block;
   position: relative;
@@ -47,7 +46,7 @@ const Wrapper = styled.div`
   background: #fff;
   border-radius: 4px;
   color: #333;
-  width: 250px;
+  width: 340px;
 
   @media (max-width: 730px) {
     margin-right: 51px;
@@ -82,7 +81,7 @@ const Flights = styled.div`
 `;
 
 const ImageWrap = styled.div`
-  height: 130px;
+  height: 175px;
   overflow: hidden;
 `;
 const Airport = styled.span`
@@ -106,89 +105,51 @@ const Bonus = styled.span`
 
   color: ${light};
 `;
+
 class SelectedDestination extends React.Component {
-  wrapper = React.createRef();
-
-  state = {
-    mounted: false
-  };
-
-  componentWillUnmount() {
-    const current = document.querySelector('#selected');
-    if (current) {
-      current.classList.add('fadeOut');
-    }
-  }
-
-  componentDidMount() {
-    const element = findDOMNode(this.wrapper.current);
-    const target = element.cloneNode(true);
-
-    mapInstance.setMarker(
-      [
-        this.props.destination.coordinates.longitude,
-        this.props.destination.coordinates.latitude
-      ],
-      target
-    );
-
-    setTimeout(() => {
-      target.classList.add('fadeIn');
-      document.querySelector('#flightToggle') &&
-        document
-          .querySelector('#flightToggle')
-          .addEventListener('click', () => {
-            UiStore.toggleModdal();
-          });
-    }, 200);
-    this.setState({ mounted: true });
-  }
-
   render() {
     const { destination } = this.props;
     const { formattedAddress, country, requiredPoints } = destination;
 
-    if (this.state.mounted) return null;
-
     return (
-      <OutSide innerRef={this.wrapper}>
-        <Wrapper id="selected">
-          <ImageWrap>
-            <img
-              src={`https://source.unsplash.com/260x150/?${get(
-                destination,
-                'location.country'
-              )}`}
-            />
-          </ImageWrap>
-          <Inner>
-            <h3>
-              {get(destination, 'location.cityName')} -{' '}
-              {get(destination, 'location.country')}
-              <Airport>{get(destination, 'location.airportCode')}</Airport>
-            </h3>
-            <Step>
-              <span>{get(destination, 'flightInformation.flight_time')}</span>
-              <span>
-                {get(destination, 'flightInformation.flight_distance')} km
-              </span>
-            </Step>
-            <Step>
-              Krävda EuroBonus poäng: <Bonus>{requiredPoints}</Bonus>
-            </Step>
-            <Step>
-              Platser kvar: <Bonus>23</Bonus>
-            </Step>
-            <Stats>
-              <div>🎵 Kendrick Lamar - 25 okt</div>
-              <div>🎵 Magnus Uggla - 25 nov</div>
-              <div>🍽 3 Michelin star</div>
-              <div>☀️ Average 26°</div>
-            </Stats>
-            <Flights id="flightToggle">Visa tillgängliga flyg</Flights>
-          </Inner>
-        </Wrapper>
-      </OutSide>
+      <Wrapper id="selected">
+        <ImageWrap>
+          <img
+            src={`https://source.unsplash.com/340x175/?${get(
+              destination,
+              'location.country'
+            )}`}
+          />
+        </ImageWrap>
+        <Inner>
+          <h3>
+            {get(destination, 'location.cityName')} -{' '}
+            {get(destination, 'location.country')}
+            <Airport>{get(destination, 'location.airportCode')}</Airport>
+          </h3>
+          <Step>
+            <span>{get(destination, 'flightInformation.flight_time')}</span>
+            <span>
+              {get(destination, 'flightInformation.flight_distance')} km
+            </span>
+          </Step>
+          <Step>
+            Krävda EuroBonus poäng: <Bonus>{requiredPoints}</Bonus>
+          </Step>
+          <Step>
+            Platser kvar: <Bonus>23</Bonus>
+          </Step>
+          <Stats>
+            <div>🎵 Kendrick Lamar - 25 okt</div>
+            <div>🎵 Magnus Uggla - 25 nov</div>
+            <div>🍽 3 Michelin star</div>
+            <div>☀️ Average 26°</div>
+          </Stats>
+          <Flights onClick={UiStore.toggleModdal} id="flightToggle">
+            Visa tillgängliga flyg
+          </Flights>
+        </Inner>
+      </Wrapper>
     );
   }
 }

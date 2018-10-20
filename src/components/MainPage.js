@@ -46,12 +46,13 @@ class MainPage extends React.Component {
         <PageLoader active={UiStore.isPageLoading}>
           <Loader />
         </PageLoader>
-        <MapInfo />
         <RandomDestination />
 
         {UiStore.showFlights && <TravelInfo />}
         <Filters />
         <User />
+
+        <div id="selected-root" />
       </Container>
     );
   }

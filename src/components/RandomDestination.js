@@ -8,6 +8,8 @@ const Wrapper = styled.div`
   left: 10px;
   bottom: 10px;
   cursor: pointer;
+  font-weight: bold;
+  font-family: 'ScandinavianNew', 'Helvetica', sans-serif;
 
   @media (max-width: 730px) {
     bottom: auto;
@@ -17,7 +19,7 @@ const Wrapper = styled.div`
 
 class RandomDestination extends React.Component {
   render() {
-    return <Wrapper onClick={UiStore.randomDestination}>random</Wrapper>;
+    return <Wrapper onClick={UiStore.randomDestination}>Random</Wrapper>;
   }
 }
 
