@@ -8,6 +8,11 @@ const Wrapper = styled.div`
   left: 10px;
   bottom: 10px;
   cursor: pointer;
+
+  @media (max-width: 730px) {
+    bottom: auto;
+    top: 5px;
+  }
 `;
 
 class RandomDestination extends React.Component {

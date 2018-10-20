@@ -49,6 +49,10 @@ const Wrapper = styled.div`
   color: #333;
   width: 250px;
 
+  @media (max-width: 730px) {
+    margin-right: 51px;
+  }
+
   img {
     max-width: 100%;
   }
@@ -87,6 +91,14 @@ const Airport = styled.span`
 const OutSide = styled.div`
   display: inline-block;
 `;
+const FlightTime = styled.div`
+  font-size: 13px;
+  margin-bottom: 5px;
+
+  span {
+    margin-right: 5px;
+  }
+`;
 
 class SelectedDestination extends React.Component {
   wrapper = React.createRef();
@@ -114,12 +126,14 @@ class SelectedDestination extends React.Component {
       target
     );
 
-    document.querySelector('#flightToggle').addEventListener('click', () => {
-      UiStore.toggleModdal();
-    });
-
     setTimeout(() => {
       target.classList.add('fadeIn');
+      document.querySelector('#flightToggle') &&
+        document
+          .querySelector('#flightToggle')
+          .addEventListener('click', () => {
+            UiStore.toggleModdal();
+          });
     }, 200);
     this.setState({ mounted: true });
   }
@@ -130,6 +144,7 @@ class SelectedDestination extends React.Component {
 
     if (this.state.mounted) return null;
 
+    console.log({ ...destination });
     return (
       <OutSide innerRef={this.wrapper}>
         <Wrapper id="selected">
@@ -147,7 +162,12 @@ class SelectedDestination extends React.Component {
               {get(destination, 'location.country')}
               <Airport>{get(destination, 'location.airportCode')}</Airport>
             </h3>
-
+            <FlightTime>
+              <span>{get(destination, 'flightInformation.flight_time')}</span>
+              <span>
+                {get(destination, 'flightInformation.flight_distance')} km
+              </span>
+            </FlightTime>
             <Stats>
               <div>🌈 LGBT friendly</div>
               <div>🍽 3 Michelin star</div>

@@ -13,6 +13,10 @@ const Container = styled.div`
   z-index: 50;
   left: 50%;
   display: flex;
+
+  @media (max-width: 730px) {
+    bottom: 2px;
+  }
 `;
 
 const Wrapper = styled.div`

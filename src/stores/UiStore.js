@@ -56,6 +56,9 @@ class UiStore {
   @action
   setSelectedMonth = month => {
     this.selectedMonth = month;
+    this.setSelectedDestination(null);
+    mapInstance.removeCurrentMarker();
+
     this.updateLocations();
   };
 
