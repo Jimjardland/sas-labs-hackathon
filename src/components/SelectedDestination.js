@@ -167,7 +167,7 @@ class SelectedDestination extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      get(prevState, 'destination.city') !== get(prevState, 'destination.city')
+      get(prevProps, 'destination.city') !== get(this.props, 'destination.city')
     ) {
       this.setState({ calenderView: false });
     }
