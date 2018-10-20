@@ -12,7 +12,7 @@ const gaTrackingCode = `
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-43885727-8');
+  gtag('config', 'UA-43885727-9');
 `;
 
 const Seo = props => {
