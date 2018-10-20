@@ -27,7 +27,7 @@ const Prices = styled.div`
   justify-content: space-between;
 `;
 
-const max = 9449;
+const max = 13449;
 const min = 349;
 
 class PriceSlider extends React.Component {

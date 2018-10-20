@@ -51,6 +51,7 @@ const Wrapper = styled.div`
 
   @media (max-width: 730px) {
     margin-right: 51px;
+    margin-top: -57px;
   }
 
   img {
@@ -69,6 +70,7 @@ const Inner = styled.div`
 
 const Stats = styled.div`
   font-size: 14px;
+  margin-top: 5px;
   color: #3c3c3c;
 `;
 
@@ -91,15 +93,19 @@ const Airport = styled.span`
 const OutSide = styled.div`
   display: inline-block;
 `;
-const FlightTime = styled.div`
+const Step = styled.div`
   font-size: 13px;
-  margin-bottom: 5px;
 
   span {
     margin-right: 5px;
   }
 `;
+const Bonus = styled.span`
+  font-weight: bold;
+  font-family: 'ScandinavianNew', 'Helvetica', sans-serif;
 
+  color: ${light};
+`;
 class SelectedDestination extends React.Component {
   wrapper = React.createRef();
 
@@ -140,11 +146,10 @@ class SelectedDestination extends React.Component {
 
   render() {
     const { destination } = this.props;
-    const { formattedAddress, country } = destination;
+    const { formattedAddress, country, requiredPoints } = destination;
 
     if (this.state.mounted) return null;
 
-    console.log({ ...destination });
     return (
       <OutSide innerRef={this.wrapper}>
         <Wrapper id="selected">
@@ -162,16 +167,22 @@ class SelectedDestination extends React.Component {
               {get(destination, 'location.country')}
               <Airport>{get(destination, 'location.airportCode')}</Airport>
             </h3>
-            <FlightTime>
+            <Step>
               <span>{get(destination, 'flightInformation.flight_time')}</span>
               <span>
                 {get(destination, 'flightInformation.flight_distance')} km
               </span>
-            </FlightTime>
+            </Step>
+            <Step>
+              Krävda EuroBonus poäng: <Bonus>{requiredPoints}</Bonus>
+            </Step>
+            <Step>
+              Platser kvar: <Bonus>23</Bonus>
+            </Step>
             <Stats>
-              <div>🌈 LGBT friendly</div>
+              <div>🎵 Kendrick Lamar - 25 okt</div>
+              <div>🎵 Magnus Uggla - 25 nov</div>
               <div>🍽 3 Michelin star</div>
-              <div>🥦 Vegan friendly</div>
               <div>☀️ Average 26°</div>
             </Stats>
             <Flights id="flightToggle">Visa tillgängliga flyg</Flights>

@@ -6,6 +6,7 @@ import PriceSlider from './PriceSlider';
 import emitter from '../uiEmitter';
 import anime from 'animejs';
 import { findDOMNode } from 'react-dom';
+import RegionSelect from './RegionSelect';
 
 const Container = styled.div`
   position: fixed;
@@ -16,11 +17,15 @@ const Container = styled.div`
 
   @media (max-width: 730px) {
     bottom: 2px;
+
+    h4 {
+      display: none;
+    }
   }
 `;
 
 const Wrapper = styled.div`
-  display: flex;
+  // display: flex;
   opacity: 0;
 `;
 
@@ -51,6 +56,9 @@ class Filters extends React.Component {
     return (
       <Container>
         <Wrapper innerRef={this.wrapper}>
+          <Part>
+            <RegionSelect />
+          </Part>
           <Part>
             <h4>Pris</h4>
             <PriceSlider />

@@ -15,20 +15,29 @@ const mapDestinations = destinations => {
     const { flightProducts = [] } = destination;
 
     const prices = {};
+    const bonuses = {};
+    let requiredPoints;
 
     flightProducts.forEach(month => {
       const m = moment(month.outBoundDate).format('MMM');
-
       const price = get(month, 'lowestPrice.totalPrice');
+      const a = 60000 / 10000;
+      const requiredBonus = a * price;
+
       if (price && !prices[m]) {
         prices[m] = parseInt(price);
+        bonuses[m] = requiredBonus;
+        requiredPoints =
+          requiredBonus && Math.round(requiredBonus / 1000) * 1000;
       }
     });
 
     return {
       ...destination,
       city: get(destination, 'location.cityName'),
-      prices
+      prices,
+      bonuses,
+      requiredPoints
     };
   });
 };
@@ -44,7 +53,7 @@ class UiStore {
   selectedMonth = months[0];
 
   @observable
-  priceFilter = 9449;
+  priceFilter = 13449;
 
   @observable
   showFlights = false;
@@ -88,10 +97,9 @@ class UiStore {
     const final = origins
       .map(origin => {
         const price = origin.prices[this.selectedMonth];
+        const bonus = origin.bonuses[this.selectedMonth];
 
-        const a = 60000 / 10000;
-        const requiredBonus = a * price;
-        let bonusProgress = (this.user.points / requiredBonus) * 100;
+        let bonusProgress = (this.user.points / bonus) * 100;
 
         if (price) {
           bonusProgress = bonusProgress > 100 ? 100 : parseInt(bonusProgress);
@@ -100,8 +108,9 @@ class UiStore {
         return {
           ...origin,
           priceRaw: price,
-          price: price ? `${price} ${origin.currency}` : undefined,
-          bonusProgress
+          price: price && `${price} ${origin.currency}`,
+          bonusProgress,
+          euroBonus: bonus
         };
       })
       .filter(dest => dest.priceRaw && dest.priceRaw < this.priceFilter);
@@ -135,6 +144,17 @@ class UiStore {
     mapInstance.removeCurrentMarker();
     this.priceFilter = value;
     this.updateLocations();
+  };
+
+  @action
+  focusRegion = regions => {
+    const coords = this.destinations
+      .filter(d => regions.includes(get(d, 'destinationAirport.code')))
+      .filter(d => d.coordinates);
+    // .map(d => [d.coordinates.latitude, d.coordinates.latitude]);
+
+    mapInstance.fitBounds(coords);
+    console.log({ coords, regions });
   };
 }
 

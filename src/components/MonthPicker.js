@@ -10,7 +10,7 @@ import { findDOMNode } from 'react-dom';
 import throttle from 'lodash/throttle';
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   z-index: 20;
   right: 0px;
   top: 50%;

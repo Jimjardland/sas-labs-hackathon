@@ -78,6 +78,19 @@ class MapInstance {
     this.map.flyTo({ center: coordinates, zoom: 5 });
   };
 
+  fitBounds = origins => {
+    const bounds = new this.mapboxgl.LngLatBounds();
+
+    origins.forEach(origin => {
+      bounds.extend([
+        origin.coordinates.longitude,
+        origin.coordinates.latitude
+      ]);
+    });
+
+    this.map.fitBounds(bounds);
+  };
+
   showLocations = origins => {
     const points = origins.map(origin =>
       point([origin.coordinates.longitude, origin.coordinates.latitude], {
@@ -114,17 +127,8 @@ class MapInstance {
       }
     });
 
-    const bounds = new this.mapboxgl.LngLatBounds();
-
-    origins.forEach(origin => {
-      bounds.extend([
-        origin.coordinates.longitude,
-        origin.coordinates.latitude
-      ]);
-    });
-
     if (!this.src) {
-      this.map.fitBounds(bounds);
+      this.fitBounds(origins);
     }
     this.addClickers();
   };

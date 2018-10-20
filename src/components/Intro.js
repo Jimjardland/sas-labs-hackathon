@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import anime from 'animejs';
 import emitter from '../uiEmitter';
 import { findDOMNode } from 'react-dom';
+import once from 'lodash/once';
 
 const Container = styled.div`
   position: absolute;
@@ -49,11 +50,16 @@ class Intro extends React.Component {
         targets: findDOMNode(this.text.current),
         opacity: [0, 1],
         translateY: [-20, 0],
-        offset: '-=450'
+        offset: '-=450',
+        complete: () => {
+          setTimeout(() => {
+            this.hide();
+          }, 3000);
+        }
       });
   };
 
-  hide = () => {
+  hide = once(() => {
     anime({
       targets: findDOMNode(this.title.current),
       opacity: [1, 0],
@@ -64,7 +70,7 @@ class Intro extends React.Component {
       opacity: [1, 0],
       translateY: [0, -20]
     });
-  };
+  });
 
   componentDidMount() {
     emitter.on('showHeader', this.show);

@@ -1,14 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import { lighest } from '../vars';
+import { lighest, darkest } from '../vars';
 import UiStore from '../stores/UiStore';
 
 const Wrapper = styled.div`
   position: fixed;
-  right: 20px;
-  top: 20px;
+  right: 10px;
+  top: 10px;
   z-index: 50;
+  border-radius: 4px;
+  padding: 5px;
   text-align: right;
+  background: ${darkest};
 `;
 
 const Name = styled.div``;
