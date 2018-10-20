@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes, injectGlobal } from 'styled-components';
 import { middle, darkest, light } from '../vars';
 import months from '../constants/months';
 import UiStore from '../stores/UiStore';
@@ -8,6 +8,37 @@ import anime from 'animejs';
 import { findDOMNode } from 'react-dom';
 import mapInstance from '../mapInstance';
 import get from 'lodash/get';
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1)
+  }
+`;
+
+injectGlobal`
+  .mapboxgl-marker #selected {
+    opacity: 0;
+    animation-delay: 0.2s
+  }
+
+  .mapboxgl-marker.fadeIn #selected{
+    
+    animation: ${fadeIn} 0.4s ease forwards;
+  }
+
+  #selected {
+    transition: opacity 0.3s ease;
+  }
+  .fadeOut {
+    opacity: 0 !important;
+  }
+`;
 
 const Wrapper = styled.div`
   display: inline-block;
@@ -20,6 +51,11 @@ const Wrapper = styled.div`
 
   img {
     max-width: 100%;
+  }
+
+  h3 {
+    display: flex;
+    align-items: center;
   }
 `;
 
@@ -43,6 +79,14 @@ const ImageWrap = styled.div`
   height: 130px;
   overflow: hidden;
 `;
+const Airport = styled.span`
+  color: #8b8b8b;
+  font-size: 13px;
+  margin-left: 5px;
+`;
+const OutSide = styled.div`
+  display: inline-block;
+`;
 
 class SelectedDestination extends React.Component {
   wrapper = React.createRef();
@@ -51,21 +95,32 @@ class SelectedDestination extends React.Component {
     mounted: false
   };
 
+  componentWillUnmount() {
+    const current = document.querySelector('#selected');
+    if (current) {
+      current.classList.add('fadeOut');
+    }
+  }
+
   componentDidMount() {
     const element = findDOMNode(this.wrapper.current);
+    const target = element.cloneNode(true);
 
     mapInstance.setMarker(
       [
         this.props.destination.coordinates.longitude,
         this.props.destination.coordinates.latitude
       ],
-      element.cloneNode(true)
+      target
     );
 
     document.querySelector('#flightToggle').addEventListener('click', () => {
       UiStore.toggleModdal();
     });
 
+    setTimeout(() => {
+      target.classList.add('fadeIn');
+    }, 200);
     this.setState({ mounted: true });
   }
 
@@ -76,28 +131,33 @@ class SelectedDestination extends React.Component {
     if (this.state.mounted) return null;
 
     return (
-      <Wrapper innerRef={this.wrapper}>
-        <ImageWrap>
-          <img
-            src={`https://source.unsplash.com/260x150/?${get(
-              destination,
-              'location.country'
-            )}`}
-          />
-        </ImageWrap>
-        <Inner>
-          <h3>{formattedAddress}</h3>
-          <Stats>
-            <div>🌈 LGBT friendly</div>
-            <div>🍽 3 Michelin star</div>
-            <div>🥦 Vegan friendly</div>
-            <div>☀️ Average 26°</div>
-          </Stats>
-          <Flights id="flightToggle" onClick={() => console.log('asd')}>
-            Visa tillgängliga flyg
-          </Flights>
-        </Inner>
-      </Wrapper>
+      <OutSide innerRef={this.wrapper}>
+        <Wrapper id="selected">
+          <ImageWrap>
+            <img
+              src={`https://source.unsplash.com/260x150/?${get(
+                destination,
+                'location.country'
+              )}`}
+            />
+          </ImageWrap>
+          <Inner>
+            <h3>
+              {get(destination, 'location.cityName')} -{' '}
+              {get(destination, 'location.country')}
+              <Airport>{get(destination, 'location.airportCode')}</Airport>
+            </h3>
+
+            <Stats>
+              <div>🌈 LGBT friendly</div>
+              <div>🍽 3 Michelin star</div>
+              <div>🥦 Vegan friendly</div>
+              <div>☀️ Average 26°</div>
+            </Stats>
+            <Flights id="flightToggle">Visa tillgängliga flyg</Flights>
+          </Inner>
+        </Wrapper>
+      </OutSide>
     );
   }
 }

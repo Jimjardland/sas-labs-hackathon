@@ -11,6 +11,7 @@ import MapInfo from './MapInfo';
 import RandomDestination from './RandomDestination';
 import TravelInfo from './TravelInfo';
 import Filters from './Filters';
+import User from './User';
 
 const Container = styled.div`
   height: 100vh;
@@ -50,6 +51,7 @@ class MainPage extends React.Component {
 
         {UiStore.showFlights && <TravelInfo />}
         <Filters />
+        <User />
       </Container>
     );
   }

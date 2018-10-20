@@ -3,6 +3,8 @@ import Slider from 'react-rangeslider';
 import 'react-rangeslider/lib/index.css';
 import styled from 'styled-components';
 import { lighest } from '../vars';
+import debounce from 'lodash/debounce';
+import UiStore from '../stores/UiStore';
 
 const Parent = styled.div`
   width: 300px;
@@ -33,19 +35,17 @@ class PriceSlider extends React.Component {
     value: max
   };
 
-  handleChangeStart = () => {
-    console.log('Change event started');
-  };
-
   handleChange = value => {
     this.setState({
-      value: value
+      value
     });
+
+    this.changeValue(value);
   };
 
-  handleChangeComplete = () => {
-    console.log('Change event completed');
-  };
+  changeValue = debounce(value => {
+    UiStore.setPriceFilter(value);
+  }, 50);
 
   render() {
     return (
@@ -54,9 +54,7 @@ class PriceSlider extends React.Component {
           min={min}
           max={max}
           value={this.state.value}
-          onChangeStart={this.handleChangeStart}
           onChange={this.handleChange}
-          onChangeComplete={this.handleChangeComplete}
         />
         <Prices>
           <span>{min} SEK</span>

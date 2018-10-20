@@ -8,6 +8,8 @@ import moment from 'moment';
 moment.locale('sv');
 let origins = [];
 
+const points = {};
+
 const mapDestinations = destinations => {
   return destinations.map(destination => {
     const { flightProducts = [] } = destination;
@@ -47,6 +49,10 @@ class UiStore {
   @observable
   showFlights = false;
 
+  user = {
+    points: 9130
+  };
+
   @action
   setSelectedMonth = month => {
     this.selectedMonth = month;
@@ -58,9 +64,8 @@ class UiStore {
       .then(res => res.json())
       .then(destinations => {
         runInAction(() => {
-          this.destinations = destinations;
-
           origins = mapDestinations(destinations.filter(d => d.coordinates));
+          this.destinations = origins;
         });
       });
   }
@@ -77,31 +82,43 @@ class UiStore {
   };
 
   updateLocations = () => {
-    const final = origins.map(origin => {
-      const price = origin.prices[this.selectedMonth];
+    const final = origins
+      .map(origin => {
+        const price = origin.prices[this.selectedMonth];
 
-      return {
-        ...origin,
-        price: price ? `${price} ${origin.currency}` : undefined
-      };
-    });
+        const a = 60000 / 10000;
+        const requiredBonus = a * price;
+        let bonusProgress = (this.user.points / requiredBonus) * 100;
+
+        if (price) {
+          bonusProgress = bonusProgress > 100 ? 100 : parseInt(bonusProgress);
+        }
+
+        return {
+          ...origin,
+          priceRaw: price,
+          price: price ? `${price} ${origin.currency}` : undefined,
+          bonusProgress
+        };
+      })
+      .filter(dest => dest.priceRaw && dest.priceRaw < this.priceFilter);
 
     mapInstance.showLocations(final);
   };
 
   @action
   setSelectedDestination(destination) {
-    this.selectedDestination = destination;
+    this.selectedDestination = null;
+
+    setTimeout(() => {
+      this.selectedDestination = destination;
+    }, 250);
   }
 
   @action
   randomDestination = () => {
-    this.selectedDestination = null;
     const destination = origins[Math.floor(Math.random() * origins.length)];
-
-    setTimeout(() => {
-      this.setSelectedDestination(destination);
-    }, 50);
+    this.setSelectedDestination(destination);
   };
 
   @action
@@ -111,7 +128,10 @@ class UiStore {
 
   @action
   setPriceFilter = value => {
+    this.setSelectedDestination(null);
+    mapInstance.removeCurrentMarker();
     this.priceFilter = value;
+    this.updateLocations();
   };
 }
 
