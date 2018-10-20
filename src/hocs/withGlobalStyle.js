@@ -9,10 +9,6 @@ injectGlobal`
   outline: none;
 }
 
-body,
-html {
-  position: fixed;
-}
 
 *, *::before, *::after {
   box-sizing: inherit;
